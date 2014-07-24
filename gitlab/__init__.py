@@ -311,7 +311,7 @@ class Gitlab(object):
 
     def deletesshkeyuser(self, kid_, uid_):
         """
-        Deletes an sshkey for the specified user uid identified by kid
+        Deletes an sshkey for the specified user uid identified by kid (admin only)
         :param kid_: the id of the key
         :param uid_: the uid of the user
         :return: False if it didn't delete it, True if it was deleted

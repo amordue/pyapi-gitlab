@@ -232,6 +232,17 @@ class Gitlab(object):
             
             return False
 
+    def getsshkeysforuser(self, uid_):
+        """
+        Gets all the ssh keys for the specified user (admin only)
+        :return: a dictionary with the lists
+        """
+        request = requests.get(self.users_url + "/" + str(uid_) + "/keys", headers=self.headers, verify=self.verify_ssl)
+        if request.status_code == 200:
+            return json.loads(request.content.decode("utf-8"))
+        else:
+            return False
+
     def getsshkey(self, id_):
         """
         Get a single ssh key identified by id_
@@ -297,6 +308,20 @@ class Gitlab(object):
             return False
         else:
             return True
+
+    def deletesshkeyuser(self, kid_, uid_):
+        """
+        Deletes an sshkey for the specified user uid identified by kid
+        :param kid_: the id of the key
+        :param uid_: the uid of the user
+        :return: False if it didn't delete it, True if it was deleted
+        """
+        request = requests.delete(self.users_url + "/" + str(uid_) + "/keys/" + str(kid_),
+                                  headers=self.headers, verify=self.verify_ssl)
+        if request.content == b"null":
+            return False
+        else:
+            return True    
 
     def getprojects(self, page=1, per_page=20, sudo=""):
         """
